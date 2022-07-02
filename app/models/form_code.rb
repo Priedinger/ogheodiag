@@ -1,0 +1,2 @@
+class FormCode < ApplicationRecord
+end
