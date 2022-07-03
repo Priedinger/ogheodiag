@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import {FormCode} from './formcode'
+import { FormCode } from './formcode'
 
 export const Hello = props => {
 
@@ -11,13 +11,6 @@ export const Hello = props => {
 
   const openCodeForm = () => {
     setFormCodeIsVisible(true)
-  }
-
-  const checkCodeValidity = (value) => {
-    console.log("testok")
-    console.log(value)
-
-    setFormCodeIsVisible(false)
   }
 
   return (

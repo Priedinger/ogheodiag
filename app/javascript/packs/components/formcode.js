@@ -4,25 +4,64 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import { Action } from './action'
+import { Formik, Form } from 'formik'
+import * as Yup from 'yup'
+
+import { checkFormCode } from '../api_service'
 
 export const FormCode = (props) => {
 
   const [formCodeIsVisible, setFormCodeIsVisible] = useState(false)
   const { visible, onCancel, onConfirm } = props
 
+  const initialValues = {
+    form_code: ''
+  }
+
+  const validationSchema = Yup.object().shape({
+    form_code: Yup.string(),
+  })
+
+  const checkCodeValidity = (value) => {
+    checkFormCode(value).then((response) => {
+      console.log(response)
+      if (response.data.success){
+        console.log("true")
+      } else {
+        console.log("false")
+      }
+    })
+    setFormCodeIsVisible(false)
+  }
+
   return (
     <Container>
-
       <Wrapper />
       <FormBox>
         <p>Saisissez le code qui vous a été fourni:</p>
-
-        <input />
-
-        <ModalBottom>
-          <Action onClick={onCancel} text='Annuler'/>
-          <Action onClick={onConfirm} text='Confirmer'/>
-        </ModalBottom>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          validateOnMount={true}
+          onSubmit={(values, { setSubmitting }) => {
+            checkCodeValidity(values.form_code)
+          }}
+        >
+          {({ handleChange, submitForm, values, errors, setFieldValue, setFieldTouched, setFieldError }) => (
+            <Form>
+              <FormContainer>
+                <input
+                  type="text"
+                  label="Code"
+                  name="form_code"
+                  placeholder=""
+                  onChange={handleChange}
+                />
+              </FormContainer>
+                <Button type="submit" onClick={submitForm} disabled={false}>Valider</Button>
+            </Form>
+          )}
+        </Formik>
       </FormBox>
     </Container>
     )
@@ -71,4 +110,20 @@ const Title = styled.div`
   display: block;
   font-size: 50px;
   font-weight: 500;
+`
+const FormContainer = styled.div`
+  display: flex;
+  grid-gap: 2rem 4rem;
+  flex-wrap: wrap;
+  > label {
+    flex: 0 0 29%;
+  }
+`
+const ButtonContainer = styled.div`
+  margin: 2rem 0 0;
+  display: flex;
+  justify-content: flex-end;
+`
+const Button = styled.div`
+
 `
