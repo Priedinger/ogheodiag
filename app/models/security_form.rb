@@ -1,0 +1,2 @@
+class SecurityForm < ApplicationRecord
+end

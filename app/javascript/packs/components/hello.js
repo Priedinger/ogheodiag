@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import { FormCode } from './formcode'
+
 export const Hello = props => {
 
+  const [formCodeIsVisible, setFormCodeIsVisible] = useState(false)
 
-const openCodeForm = () => {
-  console.log("test")
-}
+  const openCodeForm = () => {
+    setFormCodeIsVisible(true)
+  }
 
   return (
     <Container>
@@ -32,10 +35,15 @@ const openCodeForm = () => {
         </p>
 
         <Start onClick={openCodeForm}> Commencer le questionnaire </Start>
+
+        { formCodeIsVisible &&
+          <FormCode visible={formCodeIsVisible} onCancel={() => { setFormCodeIsVisible(false)}} onConfirm={(event) => { checkCodeValidity(event.target.value)}}/>
+        }
+
       </Preambule>
     </Container>
     )
-  }
+}
 
 const Container = styled.div`
   max-width: 70%;
@@ -65,5 +73,3 @@ const Start = styled.div`
   margin: auto;
   margin-top: 4rem;
 `
-
-
